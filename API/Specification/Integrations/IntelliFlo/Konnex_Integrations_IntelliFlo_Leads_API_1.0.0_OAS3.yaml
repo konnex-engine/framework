@@ -1,0 +1,434 @@
+openapi: 3.0.0
+info:
+  version: '1.0.0'
+  title: 'Konnex Integrations IntelliFlo Leads API'
+  description: '<p>A simple API that wraps the IntelliFlo Leads API.</p><p>NOTE: In order to use this Integrations API, users must have a paid IntelliFlo subscription and an active Tenant ID for OAuth2 Authentication. <p>For further information please refer to the <a href="https://developer.intelliflo.com">IntelliFlo Developer Documentation</a>.</p>'
+  termsOfService: 'https://api.konnex-engine.io/terms-of-service'
+  contact:
+    name: Konnex Engine           # For demonstration purposes
+    url: https://konnex-engine.io # This domain name is available...
+    email: info@konnex-engine.io  # Self-explanatory...
+  license:
+    name: Konnex Public License
+    url: https://konnex-engine.io/license
+
+servers:
+  - description: "Production API"
+    url: https://api.konnex-engine.io/v1/integrations/intelliflo
+
+  - description: "Development API"
+    url: https://devapi.konnex-engine.io/v1/integrations/intelliflo
+
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/Kinexis/Konnex_Integrations_IntelliFlo_Leads_API/1.0.0
+
+paths:
+  /leads:
+    get:
+      description: 'Retrieve a list of all existing leads.'
+      summary: 'Returns an array of Lead objects'
+      tags:
+        - Leads
+      operationId: getLeads
+      parameters:
+        - name: person.firstName
+          in: query
+          description: 'The first name of the Lead or set of Leads to return'
+          schema:
+            type: string
+            example: "Konnex"
+        - name: person.lastName
+          in: query
+          description: 'The last name of the Lead or set of Leads to return'
+          schema:
+            type: string
+            example: "Integrator"
+        - name: corporate.name
+          in: query
+          description: 'The corporate name of the Lead or set of Leads to return'
+          schema:
+            type: string
+            example: "Konnex"
+        - name: trust.name
+          in: query
+          description: 'The trust name of the Lead or set of Leads to return'
+          schema:
+            type: string
+            example: "Konnex"
+        - name: currentAdviser.id
+          in: query
+          description: 'The Adviser ID current adviser of the Lead or set of Leads to return'
+          schema:
+            type: string
+            example: "Konnex"
+      responses:
+        200:
+          description: "Successfully retrieved existing Lead data"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Leads'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Leads'
+    post:
+      description: 'Creates a new IntelliFlo Lead and return the Lead object.'
+      summary: 'Creates a new Lead'
+      tags:
+        - Leads
+      operationId: createLead
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateLeadForm'
+            encoding:
+              payload:
+                contentType: application/json
+      responses:
+        201:
+          description: 'Successfully created a new Lead on IntelliFlo'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Leads'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Leads'
+
+  /leads/{leadID}:
+    get:
+      description: "Retrieve data on a specific Lead by ID"
+      summary: "Return a specific Lead object by ID"
+      tags:
+        - Leads
+      operationId: getLead
+      parameters:
+        - $ref: '#/components/parameters/LeadID'
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lead'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Lead'
+    put:
+      description: 'Update a Lead by Lead ID'
+      summary: 'Update Lead'
+      tags:
+        - Leads
+      operationId: updateLead
+      parameters:
+        - $ref: '#/components/parameters/LeadID'
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UpdateLeadForm'
+            encoding:
+              payload:
+                contentType: application/json
+      responses:
+        200:
+          description: ''
+    head:
+      description: 'Check if a lead exists by Lead ID'
+      summary: 'Check if a Lead exists'
+      tags:
+        - Leads
+      operationId: checkLeadExists
+      parameters:
+        - $ref: '#/components/parameters/LeadID'
+      responses:
+        200:
+          description: ''
+    delete:
+      description: 'Check if a lead exists by Lead ID'
+      summary: 'Check if a Lead exists'
+      tags:
+        - Leads
+      operationId: deleteLead
+      parameters:
+        - $ref: '#/components/parameters/LeadID'
+      responses:
+        204:
+          description: 'Successfully deleted Lead from IntelliFlo'
+
+tags:
+  - name: Leads
+    description: 'Perform CRUD operations on IntelliFlo Leads records'
+
+components:
+  schemas:
+
+    Leads:
+      type: array
+      description: 'An array of User model objects'
+      items:
+        $ref: '#/components/schemas/Lead'
+
+    Lead:
+      type: object
+      description: 'Data model containing User info.'
+      properties:
+        category:
+          type: string
+          example: 'Retail'
+        migrationReference:
+          type: string
+          example: 'DHNFD765547865-VDF3'
+        addresses_href:
+          type: string
+          example: ''
+        name:
+          type: string
+          example: 'Mrs. Konnex Integration User'
+        campaign:
+          $ref: '#/components/schemas/Campaign'
+        type:
+          type: string
+          example: 'Unknown'
+        contactdetails_href:
+          type: string
+          example: ''
+        relationships_href:
+          type: string
+          example: ''
+        partyType:
+          type: string
+          example: 'Person'
+        person:
+          $ref: '#/components/schemas/Person'
+        href:
+          type: string
+          example: ''
+        createdAt:
+          type: string
+          format: date-time
+          example: '2018-10-04T19:37:05.849Z'
+        originalAdviser:
+          $ref: '#/components/schemas/LeadAdviser'
+        id:
+          description: 'Auto-generated if left blank'
+          type: integer
+          example: '2565946'
+        trust:
+          $ref: '#/components/schemas/Trust'
+        corporate:
+          $ref: '#/components/schemas/Corporate'
+        currentAdviser:
+          $ref: '#/components/schemas/LeadAdviser'
+        externalReference:
+          type: string
+        secondaryReference:
+          type: string
+
+    Campaign:
+      type: object
+      properties:
+        source:
+          type: string
+          example: 'Amazing Introducer'
+        type:
+          type: string
+          example: 'Profitable Campaign'
+        reference:
+          type: string
+          example: 'EKA387453JX'
+
+    Person:
+      type: object
+      properties:
+        maritalStatus:
+          type: string
+          example: 'Single'
+        niNumber:
+          type: string
+          example: 'AB123456C'
+        maritalStatusSince:
+          type: string
+          format: date-time
+          example: '2018-10-04T19:37:05.849Z'
+        firstName:
+          type: string
+          example: 'Konnex'
+        title:
+          type: string
+          example: 'Mrs.'
+        middleName:
+          type: string
+          example: 'Integration'
+        lastName:
+          type: string
+          example: 'User'
+        maidenName:
+          type: string
+          example: 'Jones'
+        nationalityCountry:
+          $ref: '#/components/schemas/NationalityCountry'
+        dateOfBirth:
+          type: string
+          example: '2018-10-04T19:37:05.849Z'
+        nationalClientIdentifier:
+          description: 'National Insurance or Social Security Number equivalent'
+          type: string
+          example: 'AB123456C'
+        deceasedOn:
+          type: string
+          example: '2018-10-04T19:37:05.849Z'
+        healthProfile:
+          $ref: '#/components/schemas/HealthProfile'
+        territorialProfile:
+          $ref: '#/components/schemas/TerritorialProfile'
+        isWillUptoDate:
+          type: boolean
+          example: false
+        gender:
+          type: string
+          enum:
+            - Unspecified
+              Male
+              Female
+          example: 'Female'
+        salutation:
+          type: string
+          example: 'Doctor'
+        isDeceased:
+          type: boolean
+          example: false
+        nationality:
+          type: string
+          example: 'British'
+        hasWill:
+          type: boolean
+          example: false
+        isPowerOfAttorneyGranted:
+          type: boolean
+          example: false
+      required:
+        - firstName
+          lastName
+
+    NationalityCountry:
+      type: object
+      properties:
+        isoCode:
+          type: string
+          example: 'UK'
+        name:
+          type: string
+          example: 'United Kingdom'
+
+    HealthProfile:
+      type: object
+      properties:
+        inGoodHealth:
+          type: boolean
+          example: false
+        isSmoker:
+          type: string
+          format: enum
+          example: 'Unknown'
+        smokedInLast12Months:
+          type: boolean
+          example: false
+
+    TerritorialProfile:
+      type: object
+      properties:
+        expatriate:
+          type: boolean
+          example: false
+        ukDomicile:
+          type: boolean
+          example: false
+        countryOfBirth:
+          type: string
+          example: 'England'
+        ukResident:
+          type: boolean
+          example: false
+
+    LeadAdviser:
+      type: object
+      properties:
+        href:
+          type: string
+          example: ''
+        id:
+          type: integer
+          example: 745247593268
+        name:
+          type: string
+          example: 'Mr. Helpful Adviser'
+
+    Trust:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - Other
+              AccumulationAndMaintenance
+              Discretionary
+              InterestInPossession
+              Bare
+          example: 'Other'
+        name:
+          type: string
+          example: 'Such and Such Trust'
+
+    Corporate:
+      type: object
+      properties:
+        businessType:
+          type: string
+        name:
+          type: string
+        companyRegistrationNumber:
+          type: string
+        isVatRegistered:
+          type: boolean
+          example: false
+        vatRegistrationNumber:
+          type: string
+        type:
+          type: string
+          enum:
+            - Unknown
+              PrivateLimitedCompany
+              PublicLimitedCompany
+              Partnership
+              SoleTrader
+              ClubAssociationOrCharity
+              LimitedLiabilityPartnership
+              InsuranceCompany
+              Bank
+              InvestmentCompany
+              Other
+          example: 'PrivateLimitedCompany'
+        establishedOrIncorporatedOn:
+          type: string
+          format: date-time
+          example: '2018-10-04T19:37:05.849Z'
+
+    CreateLeadForm:
+      $ref: '#/components/schemas/Lead'
+
+    UpdateLeadForm:
+      $ref: '#/components/schemas/Lead'
+
+  parameters:
+
+    LeadID:
+      name: leadID
+      in: path
+      required: true
+      description: ''
+      schema:
+        type: integer
+        example: 2643687

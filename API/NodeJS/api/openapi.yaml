@@ -1,0 +1,276 @@
+openapi: 3.0.0
+info:
+  contact:
+    email: info@konnex-engine.io
+    name: Konnex Engine
+    url: https://konnex-engine.io
+  description: An API that allows for creating, reading, updating and deleting of Konnex User data.
+  license:
+    name: Konnex Public License
+    url: https://konnex-engine.io/license
+  termsOfService: https://api.konnex-engine.io/terms-of-service
+  title: Konnex User API
+  version: 1.0.0
+servers:
+- description: Production API
+  url: https://api.konnex-engine.io/v1
+- description: Development API
+  url: https://apidev.konnex-engine.io/v1
+- description: SwaggerHub API Auto Mocking
+  url: https://virtserver.swaggerhub.com/Kinexis/Konnex_User_API/1.0.0
+paths:
+  /users:
+    get:
+      description: Obtain information about Konnex users.
+      operationId: getUsers
+      parameters:
+      - description: The number of user records to return.
+        explode: true
+        in: query
+        name: bodyLimit
+        required: false
+        schema:
+          example: 15
+          format: int32
+          maximum: 50
+          minimum: 10
+          type: integer
+        style: form
+      - description: The number of pages of user records to return.
+        explode: true
+        in: query
+        name: pageLimit
+        required: false
+        schema:
+          example: 3
+          format: int32
+          maximum: 10
+          minimum: 1
+          type: integer
+        style: form
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Users'
+          description: Successfully retrieved available User data.
+      summary: Retrieves all available Konnex User data
+      tags:
+      - Users
+      x-swagger-router-controller: Users
+    post:
+      description: Creates a new Konnex User in the database.
+      operationId: createUser
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            encoding:
+              payload:
+                contentType: application/json
+                style: form
+            schema:
+              $ref: '#/components/schemas/CreateUserForm'
+      responses:
+        201:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: Successfully created new User.
+      summary: Creates a new Konnex User
+      tags:
+      - Users
+      x-swagger-router-controller: Users
+  /users/{userID}:
+    delete:
+      description: Delete records for a specific Konnex User.
+      operationId: deleteUser
+      parameters:
+      - description: The User ID for the specific user.
+        explode: false
+        in: path
+        name: userID
+        required: true
+        schema:
+          example: 635853879
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        204:
+          description: Successfully deleted User data.
+      summary: Delete user data.
+      tags:
+      - Users
+      x-swagger-router-controller: Users
+    get:
+      description: Obtain information for a specific user by user ID.
+      operationId: getUserByID
+      parameters:
+      - description: The User ID for the specific user.
+        explode: false
+        in: path
+        name: userID
+        required: true
+        schema:
+          example: 635853879
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: Successfully retrieved User by ID.
+      summary: Retrieves data for a specific Konnex User
+      tags:
+      - Users
+      x-swagger-router-controller: Users
+    put:
+      description: Update records for a specific Konnex User.
+      operationId: updateUser
+      parameters:
+      - description: The User ID for the specific user.
+        explode: false
+        in: path
+        name: userID
+        required: true
+        schema:
+          example: 635853879
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        202:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: Successfully apdated User data.
+      summary: Update user data.
+      tags:
+      - Users
+      x-swagger-router-controller: Users
+components:
+  schemas:
+    Users:
+      description: An array of User model objects
+      items:
+        $ref: '#/components/schemas/User'
+      type: array
+    User:
+      description: Data model containing User info.
+      example:
+        addresses href: https://api.konnex-app.com/v1/users/635853879/addresses
+        products href: https://api.konnex-app.com/v1/users/635853879/products
+        images href: https://api.konnex-app.com/v1/users/635853879/images
+        companies href: https://api.konnex-app.com/v1/users/635853879/companies
+        teams href: https://api.konnex-app.com/v1/users/635853879/teams
+        name:
+          last name: User
+          first name: Konnex
+          middle names: Akhenaten
+        id: 635853879
+        events href: https://api.konnex-app.com/v1/users/635853879/events
+        contactdetails href: https://api.konnex-app.com/v1/users/635853879/contactdetails
+        services href: https://api.konnex-app.com/v1/users/635853879/services
+        username: konnected2019
+      properties:
+        id:
+          example: 635853879
+          format: int32
+          type: integer
+        username:
+          example: konnected2019
+          type: string
+        name:
+          $ref: '#/components/schemas/User_name'
+        contactdetails href:
+          example: https://api.konnex-app.com/v1/users/635853879/contactdetails
+          type: string
+        addresses href:
+          example: https://api.konnex-app.com/v1/users/635853879/addresses
+          type: string
+        images href:
+          example: https://api.konnex-app.com/v1/users/635853879/images
+          type: string
+        companies href:
+          example: https://api.konnex-app.com/v1/users/635853879/companies
+          type: string
+        products href:
+          example: https://api.konnex-app.com/v1/users/635853879/products
+          type: string
+        services href:
+          example: https://api.konnex-app.com/v1/users/635853879/services
+          type: string
+        events href:
+          example: https://api.konnex-app.com/v1/users/635853879/events
+          type: string
+        teams href:
+          example: https://api.konnex-app.com/v1/users/635853879/teams
+          type: string
+      type: object
+    CreateUserForm:
+      properties:
+        email:
+          example: konnexuser@konnex-engine.io
+          type: string
+        password:
+          example: '!password123'
+          format: password
+          type: string
+        username:
+          example: KonneU$er2019
+          type: string
+        full name:
+          $ref: '#/components/schemas/CreateUserForm_full name'
+      required:
+      - email
+      - password
+      type: object
+    User_name:
+      example:
+        last name: User
+        first name: Konnex
+        middle names: Akhenaten
+      properties:
+        first name:
+          example: Konnex
+          type: string
+        middle names:
+          example: Akhenaten
+          type: string
+        last name:
+          example: User
+          type: string
+    CreateUserForm_full name:
+      properties:
+        first name:
+          example: Konnex
+          type: string
+        middle names:
+          example: Apeeyih
+          type: string
+        last name:
+          example: User
+          type: string

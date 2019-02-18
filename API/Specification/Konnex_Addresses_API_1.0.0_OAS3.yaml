@@ -1,0 +1,379 @@
+openapi: 3.0.0
+
+info:
+  version: '1.0.0'
+  title: "Konnex Addresses API"
+  description: 'An API that allows for creating, reading, updating and deleting of Konnex Object Address data.'
+  termsOfService: 'https://api.konnex-engine.io/terms-of-service'
+  contact:
+    name: Konnex Engine           # For demonstration purposes
+    url: https://konnex-engine.io # This domain name is available...
+    email: info@konnex-engine.io  # Self-explanatory...
+  license:
+    name: Konnex Public License
+    url: https://konnex-engine.io/license
+
+servers:
+
+
+  - url: https://api.konnex-engine.io/v1
+    description: 'Production API'
+
+  - url: https://apidev.konnex-engine.io/v1
+    description: 'Development API'
+
+
+paths:
+  /{objectType}/{objectID}/addresses:
+    get:
+      description: 'Obtain information about Konnex users address.'
+      summary: 'Retrieves all available Konnex User address data'
+      tags:
+        - Addresses
+      operationId: getAddresses
+      parameters:
+        - name: objectType
+          in: path
+          required: true
+          description: 'The type of object to get contact details for.'
+          schema:
+            type: string
+            enum:
+              - users
+                companies
+                leads
+                consultants
+                advisers
+                introducers
+                employees
+        - name: objectID
+          in: path
+          required: true
+          description: 'The leadID of the Lead to get addresses for'
+          schema:
+            type: integer
+            example: 2654375
+        - name: bodyLimit
+          in: query
+          description: 'The number of user address records to return.'
+          schema:
+            type: integer
+            minimum: 10
+            maximum: 50
+            example: 15
+        - name: pageLimit
+          in: query
+          description: 'The number of pages of address records to return.'
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 10
+            example: 3
+      responses:
+        200:
+          description: 'Successfully retrieved available address.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Addresses'
+
+    post:
+      description: 'Creates a new Konnex User Address in the database.'
+      summary: 'Creates a new Address'
+      tags:
+        - Addresses
+      operationId: createAddress
+      parameters:
+        - name: objectType
+          in: path
+          required: true
+          description: 'The type of object to get contact details for.'
+          schema:
+            type: string
+            enum:
+              - users
+                companies
+                leads
+                consultants
+                advisers
+                introducers
+                employees
+        - name: objectID
+          in: path
+          required: true
+          description: 'The leadID of the Lead to get addresses for'
+          schema:
+            type: integer
+            example: 2654375
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateAddressForm'
+
+            encoding:
+              payload:
+                contentType: application/json
+
+      responses:
+        201:
+          description: 'Successfully created new Address.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Address'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Address'
+
+  /{objectType}/{objectID}/addresses/{addressID}:
+    get:
+      description: 'Retrieve a specific Address by Address ID.'
+      summary: Returns a specific Address by ID
+      tags:
+        - Addresses
+      operationId: getAddressByID
+      parameters:
+        - name: objectType
+          in: path
+          required: true
+          description: 'The type of object to get contact details for.'
+          schema:
+            type: string
+            enum:
+              - users
+                companies
+                leads
+                consultants
+                advisers
+                introducers
+                employees
+        - name: objectID
+          in: path
+          required: true
+          description: 'The leadID of the Lead to get addresses for'
+          schema:
+            type: integer
+            example: 2654375
+        - name: addressID
+          in: path
+          required: true
+          description: 'The Address ID for the specific Address.'
+          schema:
+            type: integer
+            example: 635853879
+      responses:
+        200:
+          description: 'Successfully retrieved Address by ID.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Address'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Address'
+
+    put:
+      description: 'Update a specific Address.'
+      summary: 'Update address data.'
+      tags:
+        - Addresses
+      operationId: updateAddress
+      parameters:
+        - name: objectType
+          in: path
+          required: true
+          description: 'The type of object to get contact details for.'
+          schema:
+            type: string
+            enum:
+              - users
+                companies
+                leads
+                consultants
+                advisers
+                introducers
+                employees
+        - name: objectID
+          in: path
+          required: true
+          description: 'The leadID of the Lead to get addresses for'
+          schema:
+            type: integer
+            example: 2654375
+        - name: addressID
+          in: path
+          required: true
+          description: 'The Address ID for the specific Address.'
+          schema:
+            type: integer
+            example: 635853879
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAddressForm'
+      responses:
+        202:
+          description: 'Successfully updated Address data.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Address'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Address'
+
+    delete:
+      description: 'Delete a specific Address.'
+      summary: 'Delete address data.'
+      tags:
+        - Addresses
+      operationId: deleteAddress
+      parameters:
+        - name: objectType
+          in: path
+          required: true
+          description: 'The type of object to get contact details for.'
+          schema:
+            type: string
+            enum:
+              - users
+                companies
+                leads
+                consultants
+                advisers
+                introducers
+                employees
+        - name: objectID
+          in: path
+          required: true
+          description: 'The leadID of the Lead to get addresses for'
+          schema:
+            type: integer
+            example: 2654375
+        - name: addressID
+          in: path
+          required: true
+          description: 'The address ID for the specific address to delete.'
+          schema:
+            type: integer
+            example: 635853879
+
+      responses:
+        204:
+          description: 'Successfully deleted Address data.'
+
+components:
+  schemas:
+
+    Address:
+      type: object
+      description: 'Data model containing a single Address.'
+      properties:
+        status:
+          type: string
+          enum: ['Current', 'Previous', 'Unknown']
+          example: 'Current'
+          default: null
+        residentFrom:
+          type: string
+          format: date-time
+          example: '2018-10-04T19:37:05.849Z'
+        href:
+          type: string
+          readOnly: true
+          example: ''
+        residencyStatus:
+          type: string
+          enum: ['OwnerOccupierMortgaged', 'OwnerOccupierUnencumbered', 'TenantPrivate', 'TenantLocalAuthorityHousingAssociation', 'LivingWithFamilyFriends']
+          example: 'OwnerOccuppierUnencumbered'
+        address:
+          $ref: '#/components/schemas/AddressObject'
+        type:
+          type: string
+        id:
+          description: 'Auto-generated if left blank'
+          type: integer
+          readOnly: true
+          example: '2565946'
+        isDefault:
+          type: boolean
+          default: false
+      required:
+        - address
+
+
+    Addresses:
+      type: array
+      description: 'An array of Address model objects'
+      items:
+        $ref: '#/components/schemas/Address'
+
+    CreateAddressForm:
+      $ref: '#/components/schemas/Address'
+
+    UpdateAddressForm:
+      $ref: '#/components/schemas/Address'
+
+    AddressObject:
+      type: object
+      description: ''
+      properties:
+        locality:
+          type: string
+          default: null
+        country:
+          $ref: '#/components/schemas/CountryObject'
+        line4:
+          type: string
+          maxLength: 191
+          default: null
+        line3:
+          type: string
+          maxLength: 191
+          default: null
+        line2:
+          type: string
+          maxLength: 191
+          default: null
+        line1:
+          type: string
+          maxLength: 191
+          default: null
+        county:
+          $ref: '#/components/schemas/CountyObject'
+        postalCode:
+          type: string
+          maxLength: 20
+          default: null
+      required:
+        - line1
+
+    CountryObject:
+      type: object
+      default: null
+      properties:
+        code:
+          type: string
+          minLength: 2
+          maxLength: 2
+        name:
+          type: string
+          maxLength: 191
+          default: null
+      required:
+        - code
+
+    CountyObject:
+      type: object
+      default: null
+      properties:
+        code:
+          type: string
+          maxLength: 6
+          default: null
+        name:
+          type: string
+          maxLength: 191
+          default: null

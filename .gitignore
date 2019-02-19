@@ -1,0 +1,10 @@
+node_modules/
+Konnex API Generator Commands
+.vscode/
+*.code-workspace
+vendor/
+.env*
+.idea
+.DS*
+.openapi*
+.htaccess

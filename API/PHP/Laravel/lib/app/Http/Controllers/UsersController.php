@@ -77,25 +77,25 @@ class UsersController extends Controller
 
         //path params validation
 
-/*
+
         //not path params validation
         if ($input['bodyLimit'] > 50) {
-            //throw new \InvalidArgumentException('invalid value for $bodyLimit when calling UsersController.getUsers, must be smaller than or equal to 50.');
+            throw new \InvalidArgumentException('invalid value for $bodyLimit when calling UsersController.getUsers, must be smaller than or equal to 50.');
         }
         if ($input['bodyLimit'] < 10) {
-            //throw new \InvalidArgumentException('invalid value for $bodyLimit when calling UsersController.getUsers, must be bigger than or equal to 10.');
+            throw new \InvalidArgumentException('invalid value for $bodyLimit when calling UsersController.getUsers, must be bigger than or equal to 10.');
         }
-        //$bodyLimit = $input['bodyLimit'];
+        $bodyLimit = $input['bodyLimit'];
 
         if ($input['pageLimit'] > 10) {
-            //throw new \InvalidArgumentException('invalid value for $pageLimit when calling UsersController.getUsers, must be smaller than or equal to 10.');
+            throw new \InvalidArgumentException('invalid value for $pageLimit when calling UsersController.getUsers, must be smaller than or equal to 10.');
         }
         if ($input['pageLimit'] < 1) {
-            //throw new \InvalidArgumentException('invalid value for $pageLimit when calling UsersController.getUsers, must be bigger than or equal to 1.');
+            throw new \InvalidArgumentException('invalid value for $pageLimit when calling UsersController.getUsers, must be bigger than or equal to 1.');
         }
-        //$pageLimit = $input['pageLimit'];
+        $pageLimit = $input['pageLimit'];
 
-*/
+
         return response('How about implementing getUsers as a get method ?');
     }
     /**

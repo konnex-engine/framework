@@ -1,7 +1,7 @@
 node_modules/
 Konnex API Generator Commands
 .vscode/
-.code*
+.code-workspace
 vendor/
 .env*
 .idea
